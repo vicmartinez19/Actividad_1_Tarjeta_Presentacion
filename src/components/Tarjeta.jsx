@@ -1,16 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './Tarjeta.css';
 
-function Tarjeta({ nombre, profesion, descripcion, avatar }) {
+/**
+ * Componente funcional Tarjeta
+ * Utiliza props para recibir información dinámica y useState para interacción local.
+ */
+function Tarjeta({
+  nombre = "Desarrollador React",
+  profesion = "Frontend Engineer",
+  mensaje = "Construyendo interfaces modernas y reactivas.",
+  habilidades = ["React", "JavaScript", "CSS"],
+  avatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+  disponibleInicial = true,
+  contacto = "contacto@ejemplo.com"
+}) {
+  const [disponible, setDisponible] = useState(disponibleInicial);
+  const [mostrarContacto, setMostrarContacto] = useState(false);
+
   return (
-    <div style={{ border: '1px solid #334155', borderRadius: '12px', padding: '20px', maxWidth: '320px', margin: '20px auto', background: '#1e293b', textAlign: 'center' }}>
-      <img
-        src={avatar}
-        alt={nombre}
-        style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '12px', border: '2px solid #38bdf8' }}
-      />
-      <h3 style={{ color: '#38bdf8', marginBottom: '4px' }}>{nombre}</h3>
-      <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '10px' }}>{profesion}</p>
-      <p style={{ color: '#cbd5e1', fontSize: '0.85rem' }}>{descripcion}</p>
+    <div className="tarjeta-card">
+      <span className={`tarjeta-badge-estado ${disponible ? 'badge-disponible' : 'badge-ocupado'}`}>
+        {disponible ? "● Disponible" : "○ En proyecto"}
+      </span>
+
+      <img src={avatar} alt={`Foto de ${nombre}`} className="tarjeta-avatar" />
+
+      <h2 className="tarjeta-nombre">{nombre}</h2>
+      <h4 className="tarjeta-profesion">{profesion}</h4>
+      <p className="tarjeta-mensaje">{mensaje}</p>
+
+      <div className="tarjeta-habilidades">
+        {habilidades.map((habilidad, idx) => (
+          <span key={idx} className="badge-skill">{habilidad}</span>
+        ))}
+      </div>
+
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <button
+          className="tarjeta-boton"
+          onClick={() => setMostrarContacto(!mostrarContacto)}
+        >
+          {mostrarContacto ? "Ocultar Contacto" : "Ver Contacto"}
+        </button>
+
+        {mostrarContacto && (
+          <p style={{ fontSize: '0.85rem', color: '#38bdf8', marginTop: '4px', wordBreak: 'break-all' }}>
+            📧 {contacto}
+          </p>
+        )}
+
+        <button
+          onClick={() => setDisponible(!disponible)}
+          style={{
+            background: 'transparent',
+            color: '#94a3b8',
+            fontSize: '0.78rem',
+            padding: '4px',
+            textDecoration: 'underline'
+          }}
+        >
+          Cambiar disponibilidad
+        </button>
+      </div>
     </div>
   );
 }
