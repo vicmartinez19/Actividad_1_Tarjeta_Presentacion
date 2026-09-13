@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Tarjeta from './components/Tarjeta';
+import Tarjeta from './components/Tarjeta.jsx';
 
 const perfilesEjemplo = [
   {
